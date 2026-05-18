@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0f172a;
+      --sidebar: #111827;
+      --card: #1e293b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --primary: #38bdf8;
+      --success: #22c55e;
+      --border: rgba(255,255,255,0.08);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    aside {
+      width: 300px;
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+      padding: 30px 20px;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    .progress-container {
+      margin-bottom: 30px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+      transition: width 0.4s ease;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 14px;
+      border-radius: 12px;
+      display: block;
+      transition: 0.3s ease;
+      font-size: 0.95rem;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background: rgba(56, 189, 248, 0.12);
+      color: white;
+    }
+
+    main {
+      margin-left: 300px;
+      width: calc(100% - 300px);
+      padding: 40px;
+    }
+
+    section {
+      margin-bottom: 80px;
+      scroll-margin-top: 20px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(56,189,248,0.2), rgba(14,165,233,0.1));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px;
+      margin-bottom: 50px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 900px;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 25px;
+    }
+
+    h3 {
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 25px;
+      transition: 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(56,189,248,0.4);
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-top: 10px;
+    }
+
+    .code-block {
+      background: #020617;
+      border-radius: 18px;
+      padding: 20px;
+      margin-top: 20px;
+      position: relative;
+      overflow-x: auto;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    pre {
+      color: #38bdf8;
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: var(--primary);
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .accordion {
+      margin-top: 20px;
+    }
+
+    .accordion-item {
+      margin-bottom: 15px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--card);
+    }
+
+    .accordion-header {
+      padding: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .accordion-content {
+      display: none;
+      padding: 0 20px 20px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .quiz {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 25px;
+      margin-top: 30px;
+      border: 1px solid var(--border);
+    }
+
+    .quiz button {
+      margin-top: 15px;
+      background: var(--primary);
+      border: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .result {
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    .terminal {
+      background: black;
+      padding: 20px;
+      border-radius: 18px;
+      color: #22c55e;
+      margin-top: 20px;
+      font-family: monospace;
+      line-height: 1.8;
+    }
+
+    footer {
+      margin-top: 100px;
+      text-align: center;
+      color: var(--muted);
+      padding-bottom: 50px;
+    }
+
+    @media(max-width: 1000px) {
+      aside {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+
+      body {
+        flex-direction: column;
+      }
+
+      main {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <aside>
+    <div class="logo">Python Academy</div>
+    <div class="subtitle">
+      Formation Python ultra simplifiée pour débutants.
+    </div>
+
+    <div class="progress-container">
+      <p style="margin-bottom:10px">Progression</p>
+      <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+      </div>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="#intro" class="nav-link active">Introduction</a></li>
+        <li><a href="#installation" class="nav-link">Installation</a></li>
+        <li><a href="#premiers" class="nav-link">Premiers Scripts</a></li>
+        <li><a href="#bases" class="nav-link">Bases Python</a></li>
+        <li><a href="#pip" class="nav-link">PIP & Dépendances</a></li>
+        <li><a href="#projet" class="nav-link">Projet CLI</a></li>
+        <li><a href="#devops" class="nav-link">Projet DevOps</a></li>
+        <li><a href="./chaos engineering.html" class="nav-link">chaos engineering</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main>
+
+    <div class="hero">
+      <h1>Apprendre Python Pas à Pas</h1>
+      <p>
+        Cette plateforme interactive vous accompagne depuis les bases absolues de Python jusqu'à la création de scripts CLI et mini projets DevOps.
+        Chaque notion est expliquée de manière détaillée avec plusieurs angles pédagogiques : définition simple, fonctionnement interne,
+        cas d'utilisation réels, erreurs fréquentes, analogies concrètes et démonstrations.
+      </p>
+    </div>
+
+    <section id="intro">
+      <h2>1. Introduction à Python</h2>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Qu'est-ce que Python ?</h3>
+          <p>
+            Python est un langage de programmation simple, puissant et très utilisé dans le monde professionnel.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Pourquoi Python ?</h3>
+          <p>
+            Syntaxe lisible, énorme communauté, automatisation rapide et compatible avec énormément de domaines.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Utilisations</h3>
+          <p>
+            Backend, IA, cybersécurité, automatisation, data science, DevOps et scripts système.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="installation">
+      <h2>2. Installation de l'environnement</h2>
+
+      <div class="accordion">
+        <div class="accordion-item">
+          <div class="accordion-header">
+            Windows
+            <span>+</span>
+          </div>
+          <div class="accordion-content">
+            Télécharger Python depuis python.org puis cocher "Add Python to PATH" pendant l'installation.
+
+            <div class="terminal">
+              python --version
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header">
+            Linux
+            <span>+</span>
+          </div>
+          <div class="accordion-content">
+            Installer Python avec le gestionnaire de paquets.
+
+            <div class="terminal">
+sudo apt update
+sudo apt install python3 python3-pip
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header">
+            macOS
+            <span>+</span>
+          </div>
+          <div class="accordion-content">
+            Installer Homebrew puis Python.
+
+            <div class="terminal">
+brew install python
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="premiers">
+      <h2>3. Premiers Scripts Python</h2>
+
+      <div class="card">
+        <h3>Qu'est-ce qu'un script Python ?</h3>
+        <p>
+          Un script Python est un fichier contenant des instructions exécutées ligne par ligne par l'interpréteur Python.
+          L'extension officielle est <strong>.py</strong>.
+        </p>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h3>Comprendre print()</h3>
+
+        <p>
+          <strong>print()</strong> est une fonction native Python utilisée pour afficher des informations dans le terminal.
+        </p>
+
+        <p style="margin-top:15px">
+          Elle sert principalement à :
+        </p>
+
+        <ul style="margin-top:15px; padding-left:20px; line-height:2; color:#94a3b8">
+          <li>Afficher du texte</li>
+          <li>Afficher le contenu des variables</li>
+          <li>Déboguer un programme</li>
+          <li>Afficher des résultats utilisateur</li>
+        </ul>
+
+        <div class="code-block">
+          <button class="copy-btn">Copier</button>
+<pre>
+print("Bonjour")
+</pre>
+        </div>
+
+        <p style="margin-top:20px">
+          Résultat attendu dans le terminal :
+        </p>
+
+        <div class="terminal">
+Bonjour
+        </div>
+
+        <p style="margin-top:20px">
+          Python lit la fonction <strong>print()</strong>, puis affiche le contenu entre parenthèses.
+        </p>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h3>Comprendre input()</h3>
+
+        <p>
+          <strong>input()</strong> permet de demander une information à l'utilisateur depuis le terminal.
+        </p>
+
+        <div class="code-block">
+          <button class="copy-btn">Copier</button>
+<pre>
+nom = input("Quel est ton nom ? ")
+print("Bienvenue", nom)
+</pre>
+        </div>
+
+        <p style="margin-top:20px">
+          Ici Python attend que l'utilisateur tape une valeur au clavier.
+        </p>
+      </div>
+
+      <div class="quiz">
+        <h3>Quiz rapide</h3>
+        <p>Quelle fonction permet d'afficher du texte ?</p>
+
+        <button onclick="checkAnswer('print')">print()</button>
+        <button onclick="checkAnswer('while')">while()</button>
+        <button onclick="checkAnswer('for')">for()</button>
+
+        <div class="result" id="quizResult"></div>
+      </div>
+    </section>
+
+    <section id="bases">
+      <h2>4. Bases du langage Python</h2>
+
+      <div class="card">
+        <h3>Comprendre les variables</h3>
+
+        <p>
+          Une variable est un espace mémoire qui stocke une donnée.
+          Elle permet de réutiliser une information dans plusieurs parties du programme.
+        </p>
+
+        <div class="code-block">
+          <button class="copy-btn">Copier</button>
+<pre>
+nom = "Karim"
+age = 32
+prix = 19.99
+admin = True
+</pre>
+        </div>
+
+        <p style="margin-top:20px">
+          Explication détaillée :
+        </p>
+
+        <ul style="margin-top:15px; padding-left:20px; line-height:2; color:#94a3b8">
+          <li><strong>nom</strong> contient du texte → type string</li>
+          <li><strong>age</strong> contient un nombre entier → type int</li>
+          <li><strong>prix</strong> contient un nombre décimal → type float</li>
+          <li><strong>admin</strong> contient vrai ou faux → type bool</li>
+        </ul>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h3>Comprendre les conditions</h3>
+
+        <p>
+          Les conditions permettent de prendre des décisions dans un programme.
+        </p>
+
+        <div class="code-block">
+          <button class="copy-btn">Copier</button>
+<pre>
+age = 18
+
+if age >= 18:
+    print("Majeur")
+else:
+    print("Mineur")
+</pre>
+        </div>
+
+        <p style="margin-top:20px">
+          Python vérifie si la condition est vraie.
+          Si oui, le bloc <strong>if</strong> est exécuté.
+          Sinon le bloc <strong>else</strong> est utilisé.
+        </p>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h3>Comprendre les boucles</h3>
+
+        <p>
+          Une boucle sert à répéter automatiquement des instructions.
+        </p>
+
+        <div class="code-block">
+          <button class="copy-btn">Copier</button>
+<pre>
+for i in range(5):
+    print(i)
+</pre>
+        </div>
+
+        <p style="margin-top:20px">
+          Python répète le bloc 5 fois.
+          La variable <strong>i</strong> change automatiquement.
+        </p>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h3>Comprendre les fonctions</h3>
+
+        <p>
+          Une fonction est un bloc réutilisable de logique.
+          Elle permet d'éviter la duplication de code.
+        </p>
+
+        <div class="code-block">
+          <button class="copy-btn">Copier</button>
+<pre>
+def addition(a, b):
+    return a + b
+
+print(addition(5, 2))
+</pre>
+        </div>
+
+        <p style="margin-top:20px">
+          <strong>return</strong> renvoie le résultat de la fonction.
+        </p>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h3>Comprendre les listes</h3>
+
+        <p>
+          Une liste stocke plusieurs valeurs dans une seule variable.
+        </p>
+
+        <div class="code-block">
+          <button class="copy-btn">Copier</button>
+<pre>
+fruits = ["pomme", "banane", "orange"]
+print(fruits[0])
+</pre>
+        </div>
+
+        <p style="margin-top:20px">
+          Les index commencent à 0 en Python.
+        </p>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h3>Comprendre les dictionnaires</h3>
+
+        <p>
+          Un dictionnaire stocke des données sous forme clé/valeur.
+        </p>
+
+        <div class="code-block">
+          <button class="copy-btn">Copier</button>
+<pre>
+user = {
+  "nom": "Karim",
+  "age": 32
+}
+
+print(user["nom"])
+</pre>
+        </div>
+
+        <p style="margin-top:20px">
+          Ici la clé <strong>nom</strong> permet d'accéder à la valeur Karim.
+        </p>
+      </div>
+    </section>
+
+    <section id="pip">
+      <h2>5. pip et dépendances</h2>
+
+      <div class="card">
+        <h3>Qu'est-ce qu'une dépendance ?</h3>
+
+        <p>
+          Une dépendance est une librairie externe ajoutée à un projet afin d'éviter de réécrire du code complexe.
+        </p>
+
+        <p style="margin-top:20px">
+          Il existe plusieurs types de dépendances :
+        </p>
+
+        <ul style="margin-top:15px; padding-left:20px; line-height:2; color:#94a3b8">
+          <li>Dépendances natives Python</li>
+          <li>Modules de la bibliothèque standard</li>
+          <li>Packages externes installés avec pip</li>
+        </ul>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h3>Bibliothèque standard Python</h3>
+
+        <p>
+          Python possède déjà énormément de modules intégrés.
+        </p>
+
+        <div class="code-block">
+          <button class="copy-btn">Copier</button>
+<pre>
+import math
+
+print(math.sqrt(25))
+</pre>
+        </div>
+
+        <p style="margin-top:20px">
+          Ici aucune installation n'est nécessaire.
+        </p>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h3>Qu'est-ce que pip ?</h3>
+
+        <p>
+          pip est le gestionnaire officiel de packages Python.
+          Son rôle est de télécharger, installer, mettre à jour et supprimer des librairies.
+        </p>
+
+        <div class="terminal">
+pip install pandas
+        </div>
+
+        <p style="margin-top:20px">
+          pip télécharge automatiquement la librairie depuis le registre Python Package Index (PyPI).
+        </p>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h3>Alternatives à pip</h3>
+
+        <ul style="margin-top:15px; padding-left:20px; line-height:2; color:#94a3b8">
+          <li>Poetry</li>
+          <li>Pipenv</li>
+          <li>Conda</li>
+          <li>uv</li>
+        </ul>
+
+        <p style="margin-top:20px">
+          Ces outils ajoutent des fonctionnalités avancées comme la gestion d'environnement et le verrouillage des versions.
+        </p>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h3>Quel est le rôle de Pandas ?</h3>
+
+        <p>
+          Pandas est une librairie spécialisée dans la manipulation et l'analyse de données.
+        </p>
+
+        <p style="margin-top:20px">
+          Elle permet notamment :
+        </p>
+
+        <ul style="margin-top:15px; padding-left:20px; line-height:2; color:#94a3b8">
+          <li>Lire des fichiers CSV</li>
+          <li>Manipuler des tableaux de données</li>
+          <li>Analyser des statistiques</li>
+          <li>Générer des rapports</li>
+          <li>Nettoyer des données</li>
+        </ul>
+
+        <div class="code-block">
+          <button class="copy-btn">Copier</button>
+<pre>
+import pandas as pd
+
+fichier = pd.read_csv("users.csv")
+
+print(fichier.head())
+</pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="projet">
+      <h2>6. Projet CLI avec Pandas</h2>
+
+      <div class="card">
+        <h3>Objectif du projet</h3>
+
+        <p>
+          Créer une application CLI qui récupère des données SQLite puis génère un rapport CSV avec Pandas.
+        </p>
+      </div>
+
+      <div class="code-block">
+        <button class="copy-btn">Copier</button>
+<pre>
+import sqlite3
+import pandas as pd
+
+conn = sqlite3.connect("database.db")
+
+df = pd.read_sql_query(
+    "SELECT * FROM utilisateurs",
+    conn
+)
+
+print(df)
+
+df.to_csv("rapport.csv")
+</pre>
+      </div>
+
+      <div class="terminal">
+python app.py
+      </div>
+    </section>
+
+    <section id="devops">
+      <h2>7. Mini Projet DevOps</h2>
+
+      <div class="card">
+        <h3>Monitoring système</h3>
+
+        <p>
+          Créer un script Python qui vérifie automatiquement l'espace disque et génère des logs.
+        </p>
+      </div>
+
+      <div class="code-block">
+        <button class="copy-btn">Copier</button>
+<pre>
+import shutil
+
+usage = shutil.disk_usage("/")
+
+print("Total:", usage.total)
+print("Utilisé:", usage.used)
+print("Libre:", usage.free)
+</pre>
+      </div>
+
+      <div class="quiz">
+        <h3>Challenge</h3>
+
+        <p>
+          Modifier le script pour enregistrer les résultats dans un fichier texte.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      Python Academy — Formation Débutant Interactive
+    </footer>
+
+  </main>
+
+  <script>
+    const links = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section');
+    const progress = document.getElementById('progress');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+
+        if(scrollY >= sectionTop - 200) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      links.forEach(link => {
+        link.classList.remove('active');
+
+        if(link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+
+      const scrollTop = document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollPercent = (scrollTop / scrollHeight) * 100;
+
+      progress.style.width = scrollPercent + '%';
+    });
+
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const code = button.nextElementSibling.innerText;
+        navigator.clipboard.writeText(code);
+        button.innerText = 'Copié';
+
+        setTimeout(() => {
+          button.innerText = 'Copier';
+        }, 2000);
+      });
+    });
+
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const content = header.nextElementSibling;
+
+        if(content.style.display === 'block') {
+          content.style.display = 'none';
+        } else {
+          content.style.display = 'block';
+        }
+      });
+    });
+
+    function checkAnswer(answer) {
+      const result = document.getElementById('quizResult');
+
+      if(answer === 'print') {
+        result.innerHTML = 'Bonne réponse ✅';
+        result.style.color = '#22c55e';
+      } else {
+        result.innerHTML = 'Mauvaise réponse ❌';
+        result.style.color = '#ef4444';
+      }
+    }
+
+    localStorage.setItem('python-course', 'started');
+  </script>
+
+</body>
+</html>

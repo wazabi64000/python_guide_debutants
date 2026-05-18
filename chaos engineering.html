@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Projet Python Chaos Engineering</title>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      background:#0f172a;
+      color:white;
+      font-family:Arial, sans-serif;
+      line-height:1.8;
+      padding:40px;
+    }
+
+    .container{
+      max-width:1200px;
+      margin:auto;
+    }
+
+    h1{
+      font-size:48px;
+      margin-bottom:20px;
+    }
+
+    h2{
+      margin-top:50px;
+      margin-bottom:20px;
+      color:#38bdf8;
+    }
+
+    h3{
+      margin-top:25px;
+      margin-bottom:10px;
+    }
+
+    .card{
+      background:#1e293b;
+      padding:25px;
+      border-radius:18px;
+      margin-top:20px;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .code{
+      background:black;
+      color:#22c55e;
+      padding:20px;
+      border-radius:12px;
+      margin-top:15px;
+      overflow-x:auto;
+      font-family:monospace;
+      line-height:1.7;
+    }
+
+    .terminal{
+      background:#020617;
+      color:#38bdf8;
+      padding:20px;
+      border-radius:12px;
+      margin-top:15px;
+      font-family:monospace;
+    }
+
+    ul{
+      padding-left:20px;
+      color:#cbd5e1;
+    }
+
+    .important{
+      border-left:5px solid orange;
+    }
+
+    .success{
+      border-left:5px solid #22c55e;
+    }
+
+    button{
+      margin-top:15px;
+      background:#38bdf8;
+      border:none;
+      padding:10px 16px;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .result{
+      margin-top:15px;
+      font-weight:bold;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>Projet Python — Chaos Engineering API</h1>
+
+  <div class="card">
+
+    <h2>Objectif du Projet</h2>
+
+    <p>
+      Construire une petite API locale Python qui simule volontairement
+      des erreurs et des lenteurs afin de comprendre les bases
+      du Chaos Engineering.
+    </p>
+
+    <p style="margin-top:20px">
+      Ce mini projet permet d'apprendre :
+    </p>
+
+    <ul>
+      <li>les API Python</li>
+      <li>Flask</li>
+      <li>les routes web</li>
+      <li>les réponses JSON</li>
+      <li>les erreurs serveur</li>
+      <li>les délais réseau</li>
+      <li>les tests de stabilité</li>
+      <li><a href="./index.html">Accueil</a></li>
+    </ul>
+
+  </div>
+
+  <div class="card">
+
+    <h2>C'est quoi Flask ?</h2>
+
+    <p>
+      Flask est un micro framework Python.
+    </p>
+
+    <p style="margin-top:15px">
+      Son rôle est de permettre la création :
+    </p>
+
+    <ul>
+      <li>d’API</li>
+      <li>de serveurs web</li>
+      <li>d’applications backend</li>
+      <li>de routes HTTP</li>
+    </ul>
+
+    <p style="margin-top:20px">
+      Flask est très utilisé car il est :
+    </p>
+
+    <ul>
+      <li>simple</li>
+      <li>léger</li>
+      <li>rapide à apprendre</li>
+      <li>parfait pour les débutants</li>
+    </ul>
+
+    <p style="margin-top:20px">
+      Exemple d'utilisation réelle :
+    </p>
+
+    <ul>
+      <li>API REST</li>
+      <li>microservices</li>
+      <li>backend IA</li>
+      <li>outils DevOps</li>
+      <li>automatisation</li>
+    </ul>
+
+  </div>
+
+  <div class="card">
+
+    <h2>Structure du Projet</h2>
+
+    <div class="code">
+chaos-api/
+
+├── app.py
+├── requirements.txt
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>Étape 1 — Installer les outils</h2>
+
+    <h3>Installer Flask</h3>
+
+    <div class="terminal">
+pip install flask
+    </div>
+
+    <p style="margin-top:20px">
+      Cette commande utilise pip pour télécharger Flask
+      depuis internet.
+    </p>
+
+    <h3>Créer le fichier requirements.txt</h3>
+
+    <div class="code">
+flask
+    </div>
+
+    <p style="margin-top:20px">
+      Ce fichier permet de stocker les dépendances du projet.
+    </p>
+
+  </div>
+
+  <div class="card success">
+
+    <h2>Étape 2 — Générer l’API Python</h2>
+
+    <p>
+      Créer un fichier :
+    </p>
+
+    <div class="terminal">
+app.py
+    </div>
+
+  </div>
+
+  <div class="card success">
+
+    <h2>Code Complet du Projet</h2>
+
+    <div class="code">
+# importer Flask
+from flask import Flask
+
+# importer random pour générer du hasard
+import random
+
+# importer time pour ralentir volontairement l'API
+import time
+
+
+# créer l'application Flask
+app = Flask(__name__)
+
+
+# créer une route web accessible sur "/"
+@app.route("/")
+
+# fonction exécutée quand on visite l'API
+def home():
+
+    # générer un nombre aléatoire entre 1 et 5
+    hasard = random.randint(1, 5)
+
+    # si le nombre est égal à 1
+    if hasard == 1:
+
+        # retourner une erreur serveur HTTP 500
+        return {
+
+            "status": "error",
+            "message": "Erreur serveur simulée"
+
+        }, 500
+
+
+    # générer un temps d'attente aléatoire
+    temps_attente = random.randint(1, 3)
+
+    # ralentir volontairement l'API
+    time.sleep(temps_attente)
+
+
+    # retourner une réponse JSON
+    return {
+
+        "status": "success",
+        "message": "API fonctionnelle",
+        "delay": temps_attente
+
+    }
+
+
+# lancer le serveur Flask
+app.run(debug=True)
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>Comprendre le Code Ligne par Ligne</h2>
+
+    <h3>1. Import Flask</h3>
+
+    <div class="code">
+from flask import Flask
+    </div>
+
+    <p>
+      Importer le framework Flask dans le projet.
+    </p>
+
+    <h3>2. Import random</h3>
+
+    <div class="code">
+import random
+    </div>
+
+    <p>
+      random permet de créer du comportement aléatoire.
+    </p>
+
+    <h3>3. Import time</h3>
+
+    <div class="code">
+import time
+    </div>
+
+    <p>
+      time permet de ralentir volontairement l'application.
+    </p>
+
+    <h3>4. Créer l'application Flask</h3>
+
+    <div class="code">
+app = Flask(__name__)
+    </div>
+
+    <p>
+      Initialise le serveur web Python.
+    </p>
+
+    <h3>5. Créer une route API</h3>
+
+    <div class="code">
+@app.route("/")
+    </div>
+
+    <p>
+      Définit une URL accessible dans le navigateur.
+    </p>
+
+    <h3>6. Créer la fonction API</h3>
+
+    <div class="code">
+def home():
+    </div>
+
+    <p>
+      Fonction exécutée quand quelqu’un appelle l’API.
+    </p>
+
+    <h3>7. Générer un hasard</h3>
+
+    <div class="code">
+hasard = random.randint(1, 5)
+    </div>
+
+    <p>
+      Python génère un nombre aléatoire.
+    </p>
+
+    <h3>8. Simuler une panne</h3>
+
+    <div class="code">
+if hasard == 1:
+    </div>
+
+    <p>
+      Une fois sur cinq l’API plante volontairement.
+    </p>
+
+    <h3>9. Simuler une API lente</h3>
+
+    <div class="code">
+time.sleep(temps_attente)
+    </div>
+
+    <p>
+      Le serveur attend plusieurs secondes avant de répondre.
+    </p>
+
+    <h3>10. Retourner du JSON</h3>
+
+    <div class="code">
+return {
+  \"status\": \"success\"
+}
+    </div>
+
+    <p>
+      Flask convertit automatiquement le dictionnaire Python en JSON.
+    </p>
+
+  </div>
+
+  <div class="card">
+
+    <h2>Étape 3 — Lancer le Projet</h2>
+
+    <div class="terminal">
+python app.py
+    </div>
+
+    <p style="margin-top:20px">
+      Résultat attendu :
+    </p>
+
+    <div class="terminal">
+* Running on http://127.0.0.1:5000
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>Tester l’API</h2>
+
+    <p>
+      Ouvrir :
+    </p>
+
+    <div class="terminal">
+http://127.0.0.1:5000
+    </div>
+
+    <p style="margin-top:20px">
+      Résultat possible :
+    </p>
+
+    <div class="code">
+{
+  "status": "success",
+  "message": "API fonctionnelle",
+  "delay": 2
+}
+    </div>
+
+    <p style="margin-top:20px">
+      Ou parfois :
+    </p>
+
+    <div class="code">
+{
+  "status": "error",
+  "message": "Erreur serveur simulée"
+}
+    </div>
+
+  </div>
+
+  <div class="card important">
+
+    <h2>Pourquoi ce Projet est Important ?</h2>
+
+    <ul>
+      <li>Comprendre les API backend</li>
+      <li>Comprendre les erreurs HTTP</li>
+      <li>Découvrir Flask</li>
+      <li>Découvrir le Chaos Engineering</li>
+      <li>Tester la stabilité d’un service</li>
+      <li>Comprendre la résilience système</li>
+    </ul>
+
+  </div>
+
+  <div class="card">
+
+    <h2>Challenge Bonus</h2>
+
+    <ul>
+      <li>Ajouter plusieurs routes</li>
+      <li>Ajouter des logs</li>
+      <li>Créer une route /health</li>
+      <li>Ajouter une surcharge CPU</li>
+      <li>Créer une fausse erreur base de données</li>
+    </ul>
+
+  </div>
+
+  <div class="card">
+
+    <h2>Quiz</h2>
+
+    <p>
+      Quel outil permet de créer une API Python ?
+    </p>
+
+    <button onclick="quiz('flask')">Flask</button>
+    <button onclick="quiz('react')">React</button>
+    <button onclick="quiz('photoshop')">Photoshop</button>
+
+    <div class="result" id="result"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+function quiz(answer){
+
+  const result = document.getElementById('result')
+
+  if(answer === 'flask'){
+
+    result.innerHTML = 'Bonne réponse ✅'
+    result.style.color = '#22c55e'
+
+  }else{
+
+    result.innerHTML = 'Mauvaise réponse ❌'
+    result.style.color = '#ef4444'
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
